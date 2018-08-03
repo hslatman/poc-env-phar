@@ -1,0 +1,56 @@
+#!/usr/bin/env php
+<?php
+
+namespace EnvPhar;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use EnvPhar\Command\TestAnotherEnvVarCommand;
+use EnvPhar\Command\TestEnvVarCommand;
+use EnvPhar\Interfaces\UsingEnvironmentVariablesInterface;
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+use Dotenv;
+
+
+$application = new Application();
+$application->setName('ENV PHAR POC');
+$application->setVersion('0.1.0');
+
+$application->add(new TestEnvVarCommand());
+$application->add(new TestAnotherEnvVarCommand());
+
+
+$output = new ConsoleOutput();
+$env_location = __DIR__ . '/../';
+$dot_env = new Dotenv\Dotenv($env_location);
+
+try {
+    $dot_env->load();
+    $output->writeln('<info>Using ENV VARs from .env file without overwriting existing ones.</info>');
+} catch (Dotenv\Exception\InvalidPathException $e) {
+    $output->writeln('<comment>Could not read from .env file. Checking existing ENV VARs instead!</comment>');
+}
+
+try {
+
+    $all_commands = $application->all();
+    $all_required_environment_variables = [];
+    foreach ($all_commands as $command) {
+        $interfaces = class_implements($command);
+        if (array_search(UsingEnvironmentVariablesInterface::class, $interfaces)) {
+            /** @var UsingEnvironmentVariablesInterface $command */
+            $all_required_environment_variables = array_merge($all_required_environment_variables, $command->getRequiredEnvironmentVariables());
+        }
+    }
+
+    $dot_env->required($all_required_environment_variables);
+
+} catch (Dotenv\Exception\ValidationException $e) {
+    $output->writeln('<error>'.$e->getMessage().'</error>');
+    die;
+}
+
+$application->run();

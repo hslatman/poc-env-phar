@@ -1,0 +1,28 @@
+{
+    "name": "hslatman/poc-env-phar",
+    "description": "A small POC for using ENV VARS with Phar",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Herman Slatman",
+            "email": "hermanslatman@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "EnvPhar\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^2.5",
+        "symfony/console": "^4.1"
+    },
+    "extra": {
+        "phar-builder": {
+            "compression": "0",
+            "name": "env-phar.phar",
+            "output-dir": ".",
+            "entry-point": "bin/console"
+        }
+    }
+}
