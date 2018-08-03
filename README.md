@@ -90,3 +90,6 @@ The UsingEnvironmentVariablesInterface could be extended for these types of requ
 Currently we're using [phar-builder](https://github.com/MacFJA/PharBuilder) because it's really simple, 
 but we might opt for packages, such as [humbug/box](https://github.com/humbug/box), 
 when we need more functionality.
+
+### Output
+Informative and error output can be improved, for example with tables for missing ENV VARs (including type information)
