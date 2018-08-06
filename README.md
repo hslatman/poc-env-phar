@@ -105,3 +105,7 @@ We might want to improve this for better (static) code analysis by removing 'str
 ### Generating .env.dist
 During speedy development practices, one could forget to define a new placeholder value within the .env.dist file.
 Because all required ENV VARs are known at runtime, we can create a Command that automatically updates an .env.dist file based on defined ENV VARs.
+
+### Overruling ENV VARs
+By default, _phpdotenv_ does not overrule any ENV VARs that are already defined.
+We could implement a flag that allows for overruling existing ENV VARs anyway, which can be handy for testing purposes.
