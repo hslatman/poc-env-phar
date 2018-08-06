@@ -90,6 +90,18 @@ The UsingEnvironmentVariablesInterface could be extended for these types of requ
 Currently we're using [phar-builder](https://github.com/MacFJA/PharBuilder) because it's really simple, 
 but we might opt for packages, such as [humbug/box](https://github.com/humbug/box), 
 when we need more functionality.
+In addition to that, [Phive](https://phar.io/) could also be implemented.
 
 ### Output
 Informative and error output can be improved, for example with tables for missing ENV VARs (including type information)
+
+### Improving Examples
+Currently just a var_dump of ENV VARs. Can be made nicer.
+
+### Setting Required ENV VARs
+Currently the ENV VARs required by a command are defined like (arrays of) strings. 
+We might want to improve this for better (static) code analysis by removing 'string based identifiers'.
+
+### Generating .env.dist
+During speedy development practices, one could forget to define a new placeholder value within the .env.dist file.
+Because all required ENV VARs are known at runtime, we can create a Command that automatically updates an .env.dist file based on defined ENV VARs.
